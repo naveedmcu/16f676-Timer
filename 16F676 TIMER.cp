@@ -1,0 +1,38 @@
+#line 1 "D:/PROGRAMS/16F676 TIMER/16F676 TIMER.c"
+void main()
+{
+ TRISA=0;
+ TRISC=0;
+ ANSEL=0;
+ PORTA=255;
+ PORTC=255;
+
+
+ T1CON=0;
+ T1CON.T1CKPS1 = 1;
+ T1CON.T1CKPS0 = 1;
+ T1CON.T1OSCEN = 1;
+
+ T1CON.TMR1CS = 0;
+ T1CON.TMR1ON = 1;
+ TMR1H = 0xB;
+ TMR1L = 0xDC;
+
+ PIE1.TMR1IE=1;
+ INTCON.GIE=1;
+ while(1);
+}
+
+void interrupt()
+{
+ if (PIE1.TMR1IE==1)
+ {
+ if (PIR1.TMR1IF==1)
+ {
+ PORTC=~PORTC;
+ PIR1.TMR1IF=0;
+ TMR1H = 0xB;
+ TMR1L = 0xDC;
+ }
+ }
+}
